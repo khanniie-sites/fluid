@@ -14,6 +14,9 @@
  *  under the License.
  */
 
+let noisejs = require("noisejs");
+let canvasHelper = require("../helpers/Painter");
+var noise = new noisejs.Noise(Math.random());
 
 const phraseBank = [
     "The spectacle before us was indeed sublime",
@@ -22,58 +25,9 @@ const phraseBank = [
     "I watched the storm, so beautiful yet terrific"
 ];
 
-class Painter {
-    constructor(can, ctx) {
-        this.canvas = can;
-        this.context = ctx;
-    }
-
-    clearCanvas() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-
-    fillStyle(fillHex) {
-        this.context.fillStyle = fillHex;
-    }
-
-    strokeStyle(strokeHex) {
-        this.context.strokeStyle = strokeHex;
-
-    }
-
-    setOpacity(a) {
-        this.context.globalAlpha = a;
-    }
-
-    lineWidth(wid) {
-        this.context.lineWidth = wid;
-    }
-
-    begin() {
-        this.context.beginPath();
-    }
-
-    end() {
-        //this.context.endPath();
-    }
-
-    drawFill() {
-        this.context.fill();
-    }
-
-    drawStroke() {
-        this.context.stroke();
-    }
-
-    vertex(x, y) {
-        this.context.lineTo(x, y);
-    }
-
-}
-
 class BeachDemo {
     constructor() {
-        this.canvas = document.getElementById("defaultCanvas0");
+        this.canvas = document.getElementById("beach-canvas");
         this.canvasContext = this.canvas.getContext("2d");
         this.animatingText = document.getElementById("text-one-fading");
         this.phrase = 0;
@@ -81,7 +35,7 @@ class BeachDemo {
         this.beachStepAmount = 1;
         this.waveStopped = false;
         this.frameNumber = 0;
-        this.painter = new Painter(this.canvas, this.canvasContext);
+        this.painter = new canvasHelper.Painter(this.canvas, this.canvasContext);
         this.animationRequest = null;
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
@@ -169,7 +123,6 @@ class BeachDemo {
             this.painter.fillStyle(fillColor);
             this.painter.setOpacity(fillOpacity);
             this.painter.drawFill();
-            this.painter.end();
         }
 
     }
@@ -212,7 +165,7 @@ class BeachDemo {
 
 
         for (var j = 0; j < 3; j++) {
-            this.drawWave(true, true, "#c8e6ff", 0.35, "#FFFFFF", 0.95,
+            this.drawWave(true, true, "#c8e6ff", 0.3, "#FFFFFF", 0.95,
                 3, xStep, noiseScale, iScale, 250, j, noiseModifier, waveLength);
         }
 
@@ -224,7 +177,7 @@ class BeachDemo {
         this.drawWave(true, false, "#93cde7", 0.25, null, null, null,
             xStep - 100, noiseScale, iScale, 250, 1.5, noiseModifier, waveLength / 2);
 
-        this.drawWave(true, false, "#64c8dc", 0.1, null, null, null,
+        this.drawWave(true, false, "#64c8dc", 0.2, null, null, null,
             xStep - 200, noiseScale, iScale, 250, 2, noiseModifier, waveLength / 2);
 
         this.drawWave(true, false, "#e6c8c8", 0.3, null, null, null,
@@ -243,3 +196,5 @@ class BeachDemo {
         this.setCanvasBounds();
     }
 }
+
+module.exports.BeachDemo = BeachDemo;

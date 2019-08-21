@@ -14,14 +14,25 @@
  *  under the License.
  */
 
+let beach = require("./demos/BeachDemo")
+let wave = require("./demos/WaveDemo")
+let magnify = require("./demos/MagnifyDemo")
+
+let beachDemo = new beach.BeachDemo();
+let waveDemo = new wave.WaveDemo();
+let magnifyDemo = new magnify.MagnifyDemo();
+
+document.querySelectorAll('.nav-icon').forEach(item => {
+    item.addEventListener('click', toggleDemo);
+});
+
 let currentlySelectedButtonId = "logo";
 let waterAssets = document.getElementById("water-assets");
-
 let buttonMappings = {
     "logo": ["demo-home"],
     "button-magnify": ["demo-magnify", "water-assets"],
     "button-wave": ["demo-wave"],
-    "button-beach": ["demo-beach", "defaultCanvas0", "white-bg"]
+    "button-beach": ["demo-beach", "beach-canvas", "beach-bg"]
 }
 
 function toggleDemo(evt) {
@@ -58,14 +69,6 @@ function toggleDemo(evt) {
     }
 }
 
-document.querySelectorAll('.nav-icon').forEach(item => {
-    item.addEventListener('click', toggleDemo);
-});
-
-let beachDemo = new BeachDemo();
-let waveDemo = new WaveDemo();
-let magnifyDemo = new MagnifyDemo();
-
 var resizeId;
 
 function whileResizing() {
@@ -74,7 +77,6 @@ function whileResizing() {
 }
 
 function fireResizeEvents() {
-    console.log("fire resize")
     beachDemo.onResize();
     waveDemo.onResize();
     magnifyDemo.onResize();
